@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 
-#define LEDC_TIMER          LEDC_TIMER_0
-#define LEDC_MODE           LEDC_LOW_SPEED_MODE
+#define LEDC_TIMER          LEDC_TIMER_1
+#define LEDC_MODE           LEDC_HIGH_SPEED_MODE
 #define LEDC_FREQ_HZ        5000
 
 
@@ -23,6 +23,7 @@ void led_rgb_init(gpio_num_t rPin, gpio_num_t gPin, gpio_num_t bPin) {
         .timer_num        = LEDC_TIMER,
         .duty_resolution  = LEDC_RESOLUTION,
         .freq_hz          = LEDC_FREQ_HZ,
+        .clk_cfg          = LEDC_AUTO_CLK
     };
     if (ledc_timer_config(&ledc_timer) != ESP_OK) {
         return;
@@ -69,7 +70,7 @@ void led_rgb_init(gpio_num_t rPin, gpio_num_t gPin, gpio_num_t bPin) {
 
 void led_rgb_set(led_rgb_t color) {
     if (!is_initialized) return;
-    
+
     ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_RED, color.red);
     ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_RED);
 
